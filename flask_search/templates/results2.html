@@ -7,6 +7,8 @@
     <style>
         .module {
             margin: 10px 0;
+            display: flex;
+            align-items: center; /* Align button and Go button horizontally */
         }
         .module button {
             padding: 10px;
@@ -17,9 +19,22 @@
             border: none;
             border-radius: 5px;
             display: block;
+            margin-right: 10px; /* Space between the module button and the Go button */
         }
         .module button:hover {
             background-color: #0056b3;
+        }
+        .go-button {
+            padding: 6px 12px;
+            font-size: 14px;
+            cursor: pointer;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        .go-button:hover {
+            background-color: #218838;
         }
         .subtopics {
             margin-left: 20px;
@@ -42,8 +57,10 @@
     <div>
         {% for module_name, subtopics in modules.items() %}
         <div class="module">
-            <!-- Use loop.index to ensure unique IDs -->
+            <!-- Module button -->
             <button onclick="toggleSubtopics('module{{ loop.index }}')">{{ module_name }}</button>
+            <!-- Go button -->
+            <button class="go-button" onclick="window.location.href='/{{ loop.index }}'">Go</button>
             <ul id="module{{ loop.index }}" class="subtopics">
                 {% for subtopic in subtopics %}
                 <li>{{ subtopic }}</li>
@@ -53,7 +70,6 @@
         {% endfor %}
     </div>
     <br>
-    
     <a href="/">Go back</a>
 </body>
 </html>
