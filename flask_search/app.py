@@ -55,13 +55,7 @@ def generate_learning_path():
         
         # Add module and subtopics to the dictionary
         modules_dict[module_name] = subtopics
-
-    
-        print(modules_dict)
-        print(type(modules_dict))
-
+    del modules_dict['s:**']  # Removes the key 'b' and its value
     return render_template("result.html", modules=modules_dict)
-
-
 if __name__ == "__main__":
     app.run(debug=True, port=5001)
