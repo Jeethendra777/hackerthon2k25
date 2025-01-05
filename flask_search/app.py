@@ -20,6 +20,7 @@ def generate_learning_path():
 
     response = model.generate_content(ip)
     response_text =response.text
+    print(response.text)
     # Initialize the dictionary to store modules and their subtopics
     
 
@@ -40,7 +41,8 @@ def generate_learning_path():
         # Add module and subtopics to the dictionary
         modules_dict[module_name] = subtopics
     del modules_dict['s:**']  # Removes the key 'b' and its value
-    return render_template("results2.html", modules=modules_dict)
+    return render_template("results3.html", modules=modules_dict)
+
 @app.route("/1")
 def module_1():
     
@@ -52,7 +54,7 @@ def module_1():
     txt.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[0]][4]).text)    
 
 
-    return render_template("module1.html", modules=modules_dict[list(modules_dict.keys())[0]],text=txt)
+    return render_template("modules/module1.html",modules=modules_dict, module=modules_dict[list(modules_dict.keys())[0]],text=txt)
 print(modules_dict)
 @app.route("/2")
 def module_2():
@@ -65,7 +67,7 @@ def module_2():
     txt.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[1]][4]).text)    
 
 
-    return render_template("module2.html", modules=modules_dict[list(modules_dict.keys())[1]],text=txt)
+    return render_template("modules/module2.html",modules=modules_dict, module=modules_dict[list(modules_dict.keys())[1]],text=txt)
 @app.route("/3")
 def module_3():
     
@@ -77,7 +79,7 @@ def module_3():
     txt.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[2]][4]).text)    
 
 
-    return render_template("module3.html", modules=modules_dict[list(modules_dict.keys())[2]],text=txt)
+    return render_template("modules/module3.html",modules=modules_dict, module=modules_dict[list(modules_dict.keys())[2]],text=txt)
 @app.route("/4")
 def module_4():
     
@@ -89,7 +91,7 @@ def module_4():
     txt.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[3]][4]).text)    
 
 
-    return render_template("module4.html", modules=modules_dict[list(modules_dict.keys())[3]],text=txt)
+    return render_template("modules/module4.html", modules=modules_dict, module=modules_dict[list(modules_dict.keys())[3]],text=txt)
 @app.route("/5")
 def module_5():
     
@@ -101,7 +103,7 @@ def module_5():
     txt.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[4]][4]).text)    
 
 
-    return render_template("module5.html", modules=modules_dict[list(modules_dict.keys())[4]],text=txt)
+    return render_template("modules/module5.html", modules=modules_dict, module=modules_dict[list(modules_dict.keys())[4]],text=txt)
 @app.route("/6")
 def module_6():
     
@@ -113,6 +115,6 @@ def module_6():
     txt.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[5]][4]).text)    
 
 
-    return render_template("module6.html", modules=modules_dict[list(modules_dict.keys())[5]],text=txt)
+    return render_template("modules/module6.html",modules=modules_dict, module=modules_dict[list(modules_dict.keys())[5]],text=txt)
 if __name__ == "__main__":
     app.run(debug=True, port=5001)
