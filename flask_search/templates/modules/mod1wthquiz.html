@@ -5,136 +5,77 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Learning Path Result</title>
     <style>
-        /* General body styling */
-body {
-    font-family: 'Helvetica Neue', sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    height: 100vh;
-    background: linear-gradient(135deg, #645CBB, #2A2438); /* Dusky gradient */
-    color: #ffffff;
-    overflow: hidden;
-}
-
-/* Sidebar styling */
-.sidebar {
-    width: 250px;
-    background: #2A2438; /* Deep dusky background for sidebar */
-    padding: 20px;
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
-    height: 100vh;
-    overflow-y: auto;
-    position: fixed;
-    border-right: 2px solid #645CBB;
-}
-
-.sidebar h2 {
-    text-align: center;
-    font-size: 1.8rem;
-    color: #F5EAEA;
-    margin-bottom: 20px;
-    border-bottom: 1px solid #645CBB;
-    padding-bottom: 10px;
-}
-
-.module {
-    margin-bottom: 15px;
-    display: flex; /* Align the buttons side-by-side */
-    align-items: center; /* Vertically align buttons */
-}
-
-.module button {
-    padding: 10px 15px;
-    font-size: 1rem;
-    cursor: pointer;
-    background: #645CBB; /* Highlighted module button */
-    color: #ffffff;
-    border: none;
-    border-radius: 8px;
-    text-align: left;
-    flex-grow: 1; /* Make the module button occupy available space */
-    transition: background 0.3s, transform 0.2s;
-}
-
-.module button:hover {
-    background: #7D67D2;
-    transform: translateX(5px);
-}
-
-.go-button {
-    width: 40px; /* Square size */
-    height: 40px; /* Square size */
-    margin-left: 10px; /* Add spacing between buttons */
-    background-color: #645CBB;
-    color: white;
-    border: none;
-    border-radius: 8px; /* Slightly rounded corners */
-    font-size: 14px;
-    cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    display: flex; /* Center text inside the button */
-    justify-content: center;
-    align-items: center;
-    transition: background 0.3s, transform 0.2s;
-}
-
-.go-button:hover {
-    background: #7D67D2;
-    transform: translateY(-3px); /* Slight hover effect */
-}
-
-
-/* Subtopics styling */
-.subtopics {
-    margin-left: 20px;
-    list-style: none;
-    padding: 10px 0 0 0;
-    display: none; /* Hidden by default */
-}
-
-.subtopics li {
-    font-size: 0.9rem;
-    margin-bottom: 5px;
-    color: #F5EAEA;
-}
-
-/* Main content styling */
-.content {
-    margin-left: 300px;
-    padding: 20px;
-    overflow-y: auto;
-    height: 100vh;
-}
-
-.content h1 {
-    font-size: 2rem;
-    color: #F5EAEA;
-    margin-bottom: 15px;
-    border-bottom: 2px solid #645CBB;
-    padding-bottom: 10px;
-}
-
-.content p {
-    font-size: 1.1rem;
-    color: #E8DFE0;
-    line-height: 1.6;
-    margin-bottom: 20px;
-}
-
-iframe {
-    border: 2px solid #645CBB;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-}
-       /* Quiz button styling */
-       .quiz-button {
+        body {
+            display: flex;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        /* Sidebar styling */
+        .sidebar {
+            width: 250px;
+            background-color: #f4f4f4;
+            padding: 10px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            height: 100vh;
+            position: fixed;
+            overflow-y: auto; /* Enable vertical scrolling */
+        }
+        .sidebar h2 {
+            text-align: center;
+        }
+        .module {
+            margin: 10px 0;
+            position: relative; /* To position the Go button relative to this container */
+        }
+        .module button {
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #ff0000;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            width: 100%; /* Full width for the module button */
+            text-align: left; /* Align text to the left */
+            position: relative; /* For proper layering with the Go button */
+        }
+        .module button:hover {
+            background-color: #0056b3;
+        }
+        .go-button {
+            position: relative; /* Overlay the Go button */
+            top: 50%; /* Center vertically relative to the module button */
+            right: -200px; /* Align to the right */
+            transform: translateY(-50%); /* Perfect vertical centering */
+            padding: 1px 1px !important;
+            font-size: 14px;
+            width: 5px;
+            cursor: pointer;
+            background-color: #e1e1e1  !important;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            z-index: 2; /* Ensure it stays above the module button */
+        }
+        .go-button:hover {
+            background-color: #218838!important;
+        }
+        .content {
+            margin-left: 270px; /* Leave space for the sidebar */
+            padding: 20px;
+        }
+        .subtopics {
+            margin-left: 20px;
+            display: none; /* Hidden by default */
+        }
+        /* Quiz button styling */
+        .quiz-button {
             position: fixed;
             bottom: 20px;
             right: 10px;
             width: 40px;
             height: 40px;
-            background-color: #645CBB;
+            background-color: #007bff;
             color: white;
             border: none;
             border-radius: 50%;
@@ -143,7 +84,7 @@ iframe {
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
         .chat-button:hover {
-            background-color: #7D67D2;
+            background-color: #0056b3;
         }
         /* chat button styling */
         .chat-button {
@@ -152,7 +93,7 @@ iframe {
             right: 53px;
             width: 40px;
             height: 40px;
-            background-color: #645CBB;
+            background-color: #007bff;
             color: white;
             border: none;
             border-radius: 50%;
@@ -161,10 +102,10 @@ iframe {
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
         .quiz-button:hover {
-            background-color: #7D67D2;
+            background-color: #0056b3;
         }
-          /* Popup styling */
-          .popup-overlay {
+        /* Popup styling */
+        .popup-overlay {
             position: fixed;
             top: 0;
             left: 0;
@@ -177,7 +118,7 @@ iframe {
             z-index: 1000;
         }
         .popup {
-            background-color:#645CBB;
+            background-color: white;
             padding: 20px;
             border-radius: 10px;
             width: 500px;
@@ -185,7 +126,7 @@ iframe {
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
         .popup .close-button {
-            background-color: #7D67D2;
+            background-color: #ff0000;
             color: white;
             border: none;
             padding: 10px 15px;
@@ -193,33 +134,6 @@ iframe {
             cursor: pointer;
             float: right;
         }
-
-/* Responsive design */
-@media (max-width: 768px) {
-    .sidebar {
-        width: 200px;
-    }
-
-    .content {
-        margin-left: 220px;
-    }
-}
-
-@media (max-width: 576px) {
-    .sidebar {
-        position: absolute;
-        z-index: 10;
-        width: 100%;
-        height: auto;
-        border-right: none;
-    }
-
-    .content {
-        margin-left: 0;
-        padding: 15px;
-    }
-}
-
     </style>
     <script>
         function toggleSubtopics(moduleId) {
@@ -261,35 +175,36 @@ iframe {
     <!-- Main content -->
     <div class="content">
         <h1>{{ module[0] }}</h1>
-    <div>
-        <p>{{ text[0] }}</p>
-        <iframe width="560" height="315" src={{links[0][0]}}></iframe>
+        <div>
+            <p>{{ text[0] }}</p>
+            <iframe width="560" height="315" src={{links[0][0]}}></iframe>
+        </div>
+    
+        <h1>{{ module[1] }}</h1>
+        <div>
+            <p>{{ text[1] }}</p>
+            <iframe width="560" height="315" src={{links[1][0]}}></iframe>
+        </div>
+        <h1>{{ module[2] }}</h1>
+        <div>
+            <p>{{ text[2] }}</p>
+            <iframe width="560" height="315" src={{links[2][0]}}></iframe>
+        </div>
+        <h1>{{ module[3] }}</h1>
+        <div>
+            <p>{{ text[3] }}</p>
+            <iframe width="560" height="315" src={{links[3][0]}}></iframe>
+        </div>
+        <h1>{{ module[4] }}</h1>
+        <div>
+            <p>{{ text[4] }}</p>
+            <iframe width="560" height="315" src={{links[4][0]}}></iframe>
+        </div>
     </div>
-
-    <h1>{{ module[1] }}</h1>
-    <div>
-        <p>{{ text[1] }}</p>
-        <iframe width="560" height="315" src={{links[1][0]}}></iframe>
-    </div>
-    <h1>{{ module[2] }}</h1>
-    <div>
-        <p>{{ text[2] }}</p>
-        <iframe width="560" height="315" src={{links[2][0]}}></iframe>
-    </div>
-    <h1>{{ module[3] }}</h1>
-    <div>
-        <p>{{ text[3] }}</p>
-        <iframe width="560" height="315" src={{links[3][0]}}></iframe>
-    </div>
-    <h1>{{ module[4] }}</h1>
-    <div>
-        <p>{{ text[4] }}</p>
-        <iframe width="560" height="315" src={{links[4][0]}}></iframe>
-    </div>
-    </div>
-       <!-- Quiz Button -->
+    <!-- Quiz Button -->
 <button class="quiz-button" onclick="loadQuiz()">Quiz</button>
 <button class="chat-button" onclick="window.location.href='/c'">chat</button>
+
 <!-- Popup -->
 <div class="popup-overlay">
     <div class="popup">
@@ -300,6 +215,7 @@ iframe {
         </div>
     </div>
 </div>
+
 <script>
     function openPopup() {
         document.querySelector('.popup-overlay').style.display = 'flex';
@@ -329,6 +245,7 @@ iframe {
         fetch('/c')
     }
 </script>
-
+    
+    </div>
 </body>
 </html>

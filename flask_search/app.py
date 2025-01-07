@@ -1,6 +1,21 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request,jsonify
+from flask import render_template_string
+
 import google.generativeai as genai
 import requests
+global entry1,entry2,entry3,entry4,entry5,entry6,entry7
+global txt1,link1
+global txt2,link2
+global txt3,link3
+global txt4,link4
+global txt5,link5
+global txt6,link6
+entry1=0
+entry2=0
+entry3=0
+entry4=0
+entry5=0
+entry6=0
 
 modules_dict = {}
 app = Flask(__name__)
@@ -8,6 +23,14 @@ app = Flask(__name__)
 # Set up the Generative AI model
 genai.configure(api_key="AIzaSyD101zERBMJp-Us2qlNJ2d8RZp8wBvAWME")
 model = genai.GenerativeModel("gemini-1.5-flash")
+def gemini_api_response(user_input):
+   
+    #prompt="do exactly what i say don't do any thing extra give me a  quiz on topics() it should have exactly 8 question remember exactly 5 questions and 4 options for each and here me this is the main part  all questions and options you give me must be in the form of a dictionaty named as quiz_q all the questions must be the keys and options must be in the form of the lists  and corext answers myst be returnet seperatly in a list named as quiz_a"
+    response = model.generate_content(user_input)
+    response_text =response.text
+    # Replace this function with actual API call to Gemini 1.5
+    # For now, simulate a response
+    return response_text
 
 @app.route("/", methods=["GET"])
 def home():
@@ -92,63 +115,89 @@ def get_youtube_urls(topics, api_key="AIzaSyC1JxQoVc69q8KdN3gzV0CuElhZuxyJvmc", 
     return list(results.values())
 @app.route("/1")
 def module_1():
-    txt=[]
-    txt.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[0]][0]).text)
-    txt.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[0]][1]).text)
-    txt.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[0]][2]).text)
-    txt.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[0]][3]).text)
-    txt.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[0]][4]).text)    
-    link=get_youtube_urls(modules_dict[list(modules_dict.keys())[0]])
-    return render_template("modules/module1.html",modules=modules_dict, module=modules_dict[list(modules_dict.keys())[0]],text=txt,links=link)
-print(modules_dict)
+    global entry1
+    global txt1
+    global link1
+    if entry1==0:
+        txt1=[]
+        txt1.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[0]][0]).text)
+        txt1.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[0]][1]).text)
+        txt1.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[0]][2]).text)
+        txt1.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[0]][3]).text)
+        txt1.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[0]][4]).text)    
+        link1=get_youtube_urls(modules_dict[list(modules_dict.keys())[0]])
+        entry1=entry1+1
+        return render_template("modules/moduke1v2.html",modules=modules_dict, module=modules_dict[list(modules_dict.keys())[0]],text=txt1,links=link1)
+    else:
+        return render_template("modules/moduke1v2.html",modules=modules_dict, module=modules_dict[list(modules_dict.keys())[0]],text=txt1,links=link1)
 @app.route("/2")
 def module_2():
-    
-    txt=[]
-    txt.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[1]][0]).text)
-    txt.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[1]][1]).text)
-    txt.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[1]][2]).text)
-    txt.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[1]][3]).text)
-    txt.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[1]][4]).text)    
-    link=get_youtube_urls(modules_dict[list(modules_dict.keys())[1]])
-
-    return render_template("modules/module2.html",modules=modules_dict, module=modules_dict[list(modules_dict.keys())[1]],text=txt,links=link)
+    global entry2
+    global txt2
+    global link2
+    if entry2==0:
+        txt2=[]
+        txt2.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[1]][0]).text)
+        txt2.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[1]][1]).text)
+        txt2.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[1]][2]).text)
+        txt2.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[1]][3]).text)
+        txt2.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[1]][4]).text)    
+        link2=get_youtube_urls(modules_dict[list(modules_dict.keys())[1]])
+        entry2=1
+        return render_template("modules/module2.html",modules=modules_dict, module=modules_dict[list(modules_dict.keys())[1]],text=txt2,links=link2)
+    else:
+        return render_template("modules/module2.html",modules=modules_dict, module=modules_dict[list(modules_dict.keys())[1]],text=txt2,links=link2)
 @app.route("/3")
 def module_3():
-    
-    txt=[]
-    txt.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[2]][0]).text)
-    txt.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[2]][1]).text)
-    txt.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[2]][2]).text)
-    txt.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[2]][3]).text)
-    txt.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[2]][4]).text)    
-
-    link=get_youtube_urls(modules_dict[list(modules_dict.keys())[2]])
-    return render_template("modules/module3.html",modules=modules_dict, module=modules_dict[list(modules_dict.keys())[2]],text=txt,links=link)
+    global entry3
+    global txt3
+    global link3
+    if entry3==0:
+        txt3=[]
+        txt3.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[2]][0]).text)
+        txt3.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[2]][1]).text)
+        txt3.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[2]][2]).text)
+        txt3.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[2]][3]).text)
+        txt3.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[2]][4]).text)    
+        link3=get_youtube_urls(modules_dict[list(modules_dict.keys())[2]])
+        entry3=1
+        return render_template("modules/module3.html",modules=modules_dict, module=modules_dict[list(modules_dict.keys())[2]],text=txt3,links=link3)
+    else:
+        return render_template("modules/module3.html",modules=modules_dict, module=modules_dict[list(modules_dict.keys())[2]],text=txt3,links=link3)
 @app.route("/4")
 def module_4():
-    
-    txt=[]
-    txt.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[3]][0]).text)
-    txt.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[3]][1]).text)
-    txt.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[3]][2]).text)
-    txt.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[3]][3]).text)
-    txt.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[3]][4]).text)    
-    link=get_youtube_urls(modules_dict[list(modules_dict.keys())[3]])
-
-    return render_template("modules/module4.html", modules=modules_dict, module=modules_dict[list(modules_dict.keys())[3]],text=txt,links=link)
+    global entry4
+    global txt4
+    global link4
+    if entry4==0:
+        txt4=[]
+        txt4.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[3]][0]).text)
+        txt4.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[3]][1]).text)
+        txt4.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[3]][2]).text)
+        txt4.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[3]][3]).text)
+        txt4.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[3]][4]).text)    
+        link4=get_youtube_urls(modules_dict[list(modules_dict.keys())[3]])
+        entry4=1
+        return render_template("modules/module4.html",modules=modules_dict, module=modules_dict[list(modules_dict.keys())[3]],text=txt4,links=link4)
+    else:
+        return render_template("modules/module4.html",modules=modules_dict, module=modules_dict[list(modules_dict.keys())[3]],text=txt4,links=link4)
 @app.route("/5")
 def module_5():
-    
-    txt=[]
-    txt.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[4]][0]).text)
-    txt.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[4]][1]).text)
-    txt.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[4]][2]).text)
-    txt.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[4]][3]).text)
-    txt.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[4]][4]).text)    
-    link=get_youtube_urls(modules_dict[list(modules_dict.keys())[4]])
-
-    return render_template("modules/module5.html", modules=modules_dict, module=modules_dict[list(modules_dict.keys())[4]],text=txt,links=link)
+    global entry5
+    global txt5
+    global link5
+    if entry5==0:
+        txt5=[]
+        txt5.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[4]][0]).text)
+        txt5.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[4]][1]).text)
+        txt5.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[4]][2]).text)
+        txt5.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[4]][3]).text)
+        txt5.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[4]][4]).text)    
+        link5=get_youtube_urls(modules_dict[list(modules_dict.keys())[4]])
+        entry5=1
+        return render_template("modules/module5.html",modules=modules_dict, module=modules_dict[list(modules_dict.keys())[4]],text=txt5,links=link5)
+    else:
+        return render_template("modules/module5.html",modules=modules_dict, module=modules_dict[list(modules_dict.keys())[4]],text=txt5,links=link5)
 @app.route("/6")
 def module_6():
     
@@ -159,7 +208,160 @@ def module_6():
     txt.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[5]][3]).text)
     txt.append(model.generate_content("Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 300 words detailed paragraph  about "+modules_dict[list(modules_dict.keys())[5]][4]).text)    
 
-    link=get_youtube_urls(modules_dict[list(modules_dict.keys())[5]])
+    link=get_youtube_urls(modules_dict[list(modules_dict.keys())[4]])
     return render_template("modules/module6.html",modules=modules_dict, module=modules_dict[list(modules_dict.keys())[5]],text=txt,links=link)
+def render_quiz_template(quiz_q, score=None):
+    quiz_html = ""
+    for i, (question, options) in enumerate(quiz_q.items()):
+        quiz_html += f"<div><p>{i+1}. {question}</p>"
+        for option in options:
+            quiz_html += f'<label><input type="radio" name="question-{i}" value="{option}"> {option}</label><br>'
+        quiz_html += "</div>"
+    result = f"<p>Your score: {score}/{len(quiz_q)}</p>" if score is not None else ""
+    return f"""
+    <form method="POST" action="/q1">
+        {quiz_html}
+        <button type="submit">Submit</button>
+    </form>
+    {result}
+    """
+
+@app.route("/q1", methods=['GET', 'POST'])
+def quiz_module1():
+    model = genai.GenerativeModel("gemini-1.5-flash")
+    prompt = "do exactly what i say don't do any thing extra give me a quiz on topics" + str(modules_dict[list(modules_dict.keys())[0]]) + "it should have exactly 5 questions remember exactly 5 questions and 4 options for each and hear me this is the main part all questions and options you give me must be in the form of a dictionary named as quiz_q all the questions must be the keys and options must be in the form of lists and correct answers must be returned separately in a list named as quiz_a"
+    response = model.generate_content(prompt)
+    response_text = response.text.replace("\n", " ").replace("     ", "")
+    response_text1 = response_text.split("quiz_q = ")[1]
+    dic = response_text1.split("quiz_a = ")
+    quiz_q = eval(dic[0])
+    quiz_a = eval(dic[1].replace("```", ""))
+    
+    if request.method == 'POST':
+        user_answers = request.form
+        score = 0
+        for i, question in enumerate(quiz_q.keys()):
+            if user_answers.get(f"question-{i}") == quiz_a[i]:
+                score += 1
+        return render_template_string(render_quiz_template(quiz_q, score))
+    
+    return render_template_string(render_quiz_template(quiz_q))
+
+@app.route("/q2", methods=['GET', 'POST'])
+def quiz_module2():
+    model = genai.GenerativeModel("gemini-1.5-flash")
+    prompt = "do exactly what i say don't do any thing extra give me a quiz on topics" + str(modules_dict[list(modules_dict.keys())[1]]) + "it should have exactly 8 questions remember exactly 5 questions and 4 options for each and hear me this is the main part all questions and options you give me must be in the form of a dictionary named as quiz_q all the questions must be the keys and options must be in the form of lists and correct answers must be returned separately in a list named as quiz_a"
+    response = model.generate_content(prompt)
+    response_text = response.text.replace("\n", " ").replace("     ", "")
+    response_text1 = response_text.split("quiz_q = ")[1]
+    dic = response_text1.split("quiz_a = ")
+    quiz_q = eval(dic[0])
+    quiz_a = eval(dic[1].replace("```", ""))
+    
+    if request.method == 'POST':
+        user_answers = request.form
+        score = 0
+        for i, question in enumerate(quiz_q.keys()):
+            if user_answers.get(f"question-{i}") == quiz_a[i]:
+                score += 1
+        return render_template_string(render_quiz_template(quiz_q, score))
+    
+    return render_template_string(render_quiz_template(quiz_q))
+@app.route("/q3", methods=['GET', 'POST'])
+def quiz_module3():
+    model = genai.GenerativeModel("gemini-1.5-flash")
+    prompt = "do exactly what i say don't do any thing extra give me a quiz on topics" + str(modules_dict[list(modules_dict.keys())[2]]) + "it should have exactly 8 questions remember exactly 5 questions and 4 options for each and hear me this is the main part all questions and options you give me must be in the form of a dictionary named as quiz_q all the questions must be the keys and options must be in the form of lists and correct answers must be returned separately in a list named as quiz_a"
+    response = model.generate_content(prompt)
+    response_text = response.text.replace("\n", " ").replace("     ", "")
+    response_text1 = response_text.split("quiz_q = ")[1]
+    dic = response_text1.split("quiz_a = ")
+    quiz_q = eval(dic[0])
+    quiz_a = eval(dic[1].replace("```", ""))
+    
+    if request.method == 'POST':
+        user_answers = request.form
+        score = 0
+        for i, question in enumerate(quiz_q.keys()):
+            if user_answers.get(f"question-{i}") == quiz_a[i]:
+                score += 1
+        return render_template_string(render_quiz_template(quiz_q, score))
+    
+    return render_template_string(render_quiz_template(quiz_q))
+@app.route("/q4", methods=['GET', 'POST'])
+def quiz_module4():
+    model = genai.GenerativeModel("gemini-1.5-flash")
+    prompt = "do exactly what i say don't do any thing extra give me a quiz on topics" + str(modules_dict[list(modules_dict.keys())[3]]) + "it should have exactly 8 questions remember exactly 5 questions and 4 options for each and hear me this is the main part all questions and options you give me must be in the form of a dictionary named as quiz_q all the questions must be the keys and options must be in the form of lists and correct answers must be returned separately in a list named as quiz_a"
+    response = model.generate_content(prompt)
+    response_text = response.text.replace("\n", " ").replace("     ", "")
+    response_text1 = response_text.split("quiz_q = ")[1]
+    dic = response_text1.split("quiz_a = ")
+    quiz_q = eval(dic[0])
+    quiz_a = eval(dic[1].replace("```", ""))
+    
+    if request.method == 'POST':
+        user_answers = request.form
+        score = 0
+        for i, question in enumerate(quiz_q.keys()):
+            if user_answers.get(f"question-{i}") == quiz_a[i]:
+                score += 1
+        return render_template_string(render_quiz_template(quiz_q, score))
+    
+    return render_template_string(render_quiz_template(quiz_q))
+@app.route("/q5", methods=['GET', 'POST'])
+def quiz_module5():
+    model = genai.GenerativeModel("gemini-1.5-flash")
+    prompt = "do exactly what i say don't do any thing extra give me a quiz on topics" + str(modules_dict[list(modules_dict.keys())[4]]) + "it should have exactly 8 questions remember exactly 5 questions and 4 options for each and hear me this is the main part all questions and options you give me must be in the form of a dictionary named as quiz_q all the questions must be the keys and options must be in the form of lists and correct answers must be returned separately in a list named as quiz_a"
+    response = model.generate_content(prompt)
+    response_text = response.text.replace("\n", " ").replace("     ", "")
+    response_text1 = response_text.split("quiz_q = ")[1]
+    dic = response_text1.split("quiz_a = ")
+    quiz_q = eval(dic[0])
+    quiz_a = eval(dic[1].replace("```", ""))
+    
+    if request.method == 'POST':
+        user_answers = request.form
+        score = 0
+        for i, question in enumerate(quiz_q.keys()):
+            if user_answers.get(f"question-{i}") == quiz_a[i]:
+                score += 1
+        return render_template_string(render_quiz_template(quiz_q, score))
+    
+    return render_template_string(render_quiz_template(quiz_q))
+@app.route("/q6", methods=['GET', 'POST'])
+def quiz_module6():
+    model = genai.GenerativeModel("gemini-1.5-flash")
+    prompt = "do exactly what i say don't do any thing extra give me a quiz on topics" + str(modules_dict[list(modules_dict.keys())[5]]) + "it should have exactly 8 questions remember exactly 5 questions and 4 options for each and hear me this is the main part all questions and options you give me must be in the form of a dictionary named as quiz_q all the questions must be the keys and options must be in the form of lists and correct answers must be returned separately in a list named as quiz_a"
+    response = model.generate_content(prompt)
+    response_text = response.text.replace("\n", " ").replace("     ", "")
+    response_text1 = response_text.split("quiz_q = ")[1]
+    dic = response_text1.split("quiz_a = ")
+    quiz_q = eval(dic[0])
+    quiz_a = eval(dic[1].replace("```", ""))
+    
+    if request.method == 'POST':
+        user_answers = request.form
+        score = 0
+        for i, question in enumerate(quiz_q.keys()):
+            if user_answers.get(f"question-{i}") == quiz_a[i]:
+                score += 1
+        return render_template_string(render_quiz_template(quiz_q, score))
+    
+    return render_template_string(render_quiz_template(quiz_q))
+
+@app.route("/c")
+def index():
+    return render_template("chat.html")
+
+@app.route("/chat", methods=["POST"])
+def chat():
+    user_message = request.json.get("message", "")
+    if not user_message.strip():
+        return jsonify({"error": "Empty message!"}), 400
+
+    # Call the Gemini 1.5 API (or mock response here)
+    bot_response = gemini_api_response(user_message)
+    return jsonify({"response": bot_response})
+
+
 if __name__ == "__main__":
     app.run(debug=True, port=5001)

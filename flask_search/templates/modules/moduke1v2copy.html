@@ -40,11 +40,11 @@ body {
 
 .module {
     margin-bottom: 15px;
-    display: flex; /* Align the buttons side-by-side */
-    align-items: center; /* Vertically align buttons */
 }
 
 .module button {
+    display: block;
+    width: 100%;
     padding: 10px 15px;
     font-size: 1rem;
     cursor: pointer;
@@ -53,7 +53,7 @@ body {
     border: none;
     border-radius: 8px;
     text-align: left;
-    flex-grow: 1; /* Make the module button occupy available space */
+    position: relative;
     transition: background 0.3s, transform 0.2s;
 }
 
@@ -63,27 +63,23 @@ body {
 }
 
 .go-button {
-    width: 40px; /* Square size */
-    height: 40px; /* Square size */
-    margin-left: 10px; /* Add spacing between buttons */
-    background-color: #645CBB;
-    color: white;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 5px 10px;
+    font-size: 0.9rem;
+    background: #F5EAEA;
+    color: #645CBB;
     border: none;
-    border-radius: 8px; /* Slightly rounded corners */
-    font-size: 14px;
+    border-radius: 8px;
     cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    display: flex; /* Center text inside the button */
-    justify-content: center;
-    align-items: center;
-    transition: background 0.3s, transform 0.2s;
+    transition: background 0.3s;
 }
 
 .go-button:hover {
-    background: #7D67D2;
-    transform: translateY(-3px); /* Slight hover effect */
+    background: #E8DFE0;
 }
-
 
 /* Subtopics styling */
 .subtopics {
@@ -127,72 +123,6 @@ iframe {
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 }
-       /* Quiz button styling */
-       .quiz-button {
-            position: fixed;
-            bottom: 20px;
-            right: 10px;
-            width: 40px;
-            height: 40px;
-            background-color: #645CBB;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            font-size: 14px;
-            cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-        .chat-button:hover {
-            background-color: #7D67D2;
-        }
-        /* chat button styling */
-        .chat-button {
-            position: fixed;
-            bottom: 20px;
-            right: 53px;
-            width: 40px;
-            height: 40px;
-            background-color: #645CBB;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            font-size: 14px;
-            cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-        .quiz-button:hover {
-            background-color: #7D67D2;
-        }
-          /* Popup styling */
-          .popup-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        .popup {
-            background-color:#645CBB;
-            padding: 20px;
-            border-radius: 10px;
-            width: 500px;
-            max-width: 90%;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        }
-        .popup .close-button {
-            background-color: #7D67D2;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            float: right;
-        }
 
 /* Responsive design */
 @media (max-width: 768px) {
@@ -229,14 +159,6 @@ iframe {
             } else {
                 element.style.display = "none"; // Hide subtopics
             }
-        }
-        function openPopup() {
-            document.querySelector('.popup-overlay').style.display = 'flex';
-            document.body.style.filter = 'blur(5px)';
-        }
-        function closePopup() {
-            document.querySelector('.popup-overlay').style.display = 'none';
-            document.body.style.filter = 'none';
         }
     </script>
 </head>
@@ -287,48 +209,5 @@ iframe {
         <iframe width="560" height="315" src={{links[4][0]}}></iframe>
     </div>
     </div>
-       <!-- Quiz Button -->
-<button class="quiz-button" onclick="loadQuiz()">Quiz</button>
-<button class="chat-button" onclick="window.location.href='/c'">chat</button>
-<!-- Popup -->
-<div class="popup-overlay">
-    <div class="popup">
-        <button class="close-button" onclick="closePopup()">Close</button>
-        <div id="quiz-content">
-            <!-- Quiz content will be dynamically loaded here -->
-            <p>Loading quiz...</p>
-        </div>
-    </div>
-</div>
-<script>
-    function openPopup() {
-        document.querySelector('.popup-overlay').style.display = 'flex';
-        document.body.style.filter = 'blur(0px)';
-    }
-
-    function closePopup() {
-        document.querySelector('.popup-overlay').style.display = 'none';
-        document.body.style.filter = 'none';
-    }
-
-    function loadQuiz() {
-        openPopup();
-        // Fetch quiz content dynamically
-        fetch('/q1')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('quiz-content').innerHTML = data;
-            })
-            .catch(error => {
-                document.getElementById('quiz-content').innerHTML = `<p>Error loading quiz. Please try again later.</p>`;
-                console.error('Error fetching quiz:', error);
-            });
-    }
-    function ldchat() {
-
-        fetch('/c')
-    }
-</script>
-
 </body>
 </html>
