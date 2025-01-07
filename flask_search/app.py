@@ -3,6 +3,8 @@ from flask import render_template_string
 
 import google.generativeai as genai
 import requests
+import re
+import markdown
 global entry1,entry2,entry3,entry4,entry5,entry6,entry7
 global txt1,link1
 global txt2,link2
@@ -36,16 +38,28 @@ def gemini_api_response(user_input):
 def home():
     return render_template("index.html")
 
+def classify_prompt(prompt):
+    """
+    Classifies a given prompt as either a 'topic' or a 'question'.
+    """
+    prompt = str(prompt)
+    print(prompt)
+    prompt = prompt.strip()
+    if re.search(r'\b(what|how|why|when|where|who|which|can|is|are|does|did|should|could|would|explain|define|solve|find|calculate)\b', prompt, re.IGNORECASE):
+        return "question"
+    elif prompt.endswith('?'):
+        return "question"
+    return "topic"
 
-@app.route("/generate", methods=["POST"])
-def generate_learning_path():
+
+
+def generate_learning_path(search_query):
     global modules_dict
-    search_query = request.form.get("search_query")
+    # search_query = request.form.get("search_query")
     ip = f"Remember, tell me exactly what I ask. Don't give me any additional information. Give me exactly 6 main topics for {search_query}. The 6 main topics should be divided into modules, with the 1st module covering the basics and introduction. The topics should become more advanced as we progress to the next modules. Remember, under each module, you should give me exactly 5 subtopics for that particular module. The response you provide must be structured: first, list all 5 modules, then list all the subtopics. Remember, just give me the names of the topics and subtopics, and don't provide any additional information."
 
     response = model.generate_content(ip)
     response_text =response.text
-    print(response.text)
     # Initialize the dictionary to store modules and their subtopics
     
 
@@ -65,6 +79,7 @@ def generate_learning_path():
         
         # Add module and subtopics to the dictionary
         modules_dict[module_name] = subtopics
+        subtopics = []
     del modules_dict['s:**']  # Removes the key 'b' and its value
     return render_template("results3.html", modules=modules_dict)
 def get_youtube_urls(topics, api_key="AIzaSyC1JxQoVc69q8KdN3gzV0CuElhZuxyJvmc", max_results=1):
@@ -210,6 +225,64 @@ def module_6():
 
     link=get_youtube_urls(modules_dict[list(modules_dict.keys())[4]])
     return render_template("modules/module6.html",modules=modules_dict, module=modules_dict[list(modules_dict.keys())[5]],text=txt,links=link)
+
+def generate_prompt(user_input, input_type):
+    """
+    Generates a prompt based on input type (topic or question) and returns rendered HTML.
+    """
+    if input_type == "topic":
+        # prompt = (
+        #     f"Act as a tutor for '{user_input}'. Break down the topic into 5 modules, arranged by difficulty level:\n\n"
+        #     "1. **Basics**: Explain foundational concepts or introductory ideas.\n"
+        #     "2. **Intermediate Concepts**: Expand on the basics with more detailed explanations and examples.\n"
+        #     "3. **Advanced Concepts**: Cover more complex ideas, techniques, or theories related to the topic.\n"
+        #     "4. **Practical Applications**: Demonstrate how the topic is applied in real-world scenarios or problems.\n"
+        #     "5. **Additional Resources**: Suggest external resources like articles, videos, and books to deepen understanding.\n\n"
+        #     "Ensure the explanations are clear and suitable for students at various levels of understanding."
+        # )
+        return generate_learning_path(user_input)
+    elif input_type == "question":
+        prompt = (f"Act as a knowledgeable tutor. Answer the following question: '{user_input}'"
+                "Please break down your answer into distinct, easy-to-follow steps. Each step should be in its own block for clarity. The structure should be:"
+                "1. **Step 1: Restate the Problem** " 
+                "Start by restating the question in your own words. Clarify any important details to ensure the question is well understood."
+                "2. **Step 2: Identify Key Concepts** " 
+                "Outline the key concepts or principles that are necessary to answer this question. If applicable, provide any formulas, theories, or foundational ideas."
+                "3. **Step 3: Approach the Solution**  "
+                "Walk through the process or methodology needed to solve the problem. Be as clear as possible, breaking down each action in logical order."
+                "4. **Step 4: Apply the Concepts** " 
+                'Demonstrate how to apply the key concepts to the problem at hand. Use examples, numbers, or explanations to show how the theory is applied.'
+               " 5. **Step 5: Summarize the Solution** " 
+                "Recap the solution, including key takeaways and any final thoughts. If there are any additional points or caveats, mention them here."
+                "'Ensure each step is clear and easy to follow. Use formatting or bullet points for additional clarity. Avoid using overly technical language unless it necessary for the explanation.")
+        gemini_response = model.generate_content(prompt)
+        response_text = gemini_response.text
+        response_text = markdown.markdown(response_text)
+        return render_template("response.html", response_text=response_text)
+    else:
+        # Handle invalid input type
+        prompt = "Invalid input type. Please provide either 'topic' or 'question'."
+
+    # Simulated content generation (replace with actual logic if using a model)
+
+    # Render the response in the HTML template
+    return render_template("result3.html", response_text=response_text)
+
+# Set up the Generative AI model
+genai.configure(api_key="AIzaSyD101zERBMJp-Us2qlNJ2d8RZp8wBvAWME")
+model = genai.GenerativeModel("gemini-1.5-flash")
+
+@app.route("/generate", methods=["POST"])
+def process_input():
+    """
+    Processes user input, classifies it as a topic or question,
+    and generates a prompt accordingly.
+    """
+    modules_dict.clear()
+    user_input = request.form.get("search_query") # User's input from the form
+    input_type = classify_prompt(user_input)    # Classify as topic or question
+    return generate_prompt(user_input, input_type)  # Generate appropriate prompt
+
 def render_quiz_template(quiz_q, score=None):
     quiz_html = ""
     for i, (question, options) in enumerate(quiz_q.items()):
